@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.KoreaIT.java.BAM.dto.Article;
 import com.KoreaIT.java.BAM.dto.Member;
 import com.KoreaIT.java.BAM.util.Util;
 
@@ -12,6 +13,7 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private String cmd;
 	private String actionMethodName;
+	private Member loginedMember;
 
 	public MemberController(Scanner sc) {
 		this.sc = sc;
@@ -26,10 +28,37 @@ public class MemberController extends Controller {
 		case "join":
 			doJoin();
 			break;
+		case "login":
+			doLogin();
+			break;
 		default:
 			System.out.println("존재하지 않는 명령어입니다.");
 			break;
 		}
+	}
+
+	private void doLogin() {
+
+		System.out.printf("아이디 : ");
+		String loginId = sc.nextLine();
+		System.out.printf("비밀번호 : ");
+		String loginPw = sc.nextLine();
+
+		Member member = getMemberByloginId(loginId);
+
+		if (member == null) {
+			System.out.println("일치하는 회원이 없습니다.");
+			return;
+		}
+		System.out.println(member.loginPw);
+		if (member.loginPw.equals(loginPw) == false) {
+			System.out.println("비밀번호 다시 입력해주세요");
+			return;
+		}
+		
+		loginedMember = member;
+		System.out.printf("로그인 성공! %s님 환영합니다.\n", loginedMember.name);
+		
 	}
 
 	public void doJoin() {
@@ -82,5 +111,29 @@ public class MemberController extends Controller {
 			i++;
 		}
 		return -1;
+	}
+
+	private Member getMemberByloginId(String loginId) {
+
+		int i = getMemberIndexByLoginId(loginId);
+
+		if (i == -1) {
+			return null;
+		}
+		return members.get(i);
+	}
+
+	private boolean isLogined() {
+		if (loginedMember == null) {
+			return true;
+		}
+		return false;
+	}
+
+	public void makeTestData() {
+		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
+		members.add(new Member(1, Util.getNowDateStr(), "test1", "1111", "회원1"));
+		members.add(new Member(2, Util.getNowDateStr(), "test2", "2222", "회원2"));
+		members.add(new Member(3, Util.getNowDateStr(), "test3", "3333", "회원3"));
 	}
 }
