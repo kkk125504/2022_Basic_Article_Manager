@@ -13,6 +13,11 @@ public class MemberController extends Controller {
 	private String cmd;
 	private String actionMethodName;
 
+	public MemberController(Scanner sc) {
+		this.sc = sc;
+		members = new ArrayList<>();
+	}
+
 	public void doAction(String cmd, String actionMethodName) {
 		this.cmd = cmd;
 		this.actionMethodName = actionMethodName;
@@ -21,12 +26,10 @@ public class MemberController extends Controller {
 		case "join":
 			doJoin();
 			break;
+		default:
+			System.out.println("존재하지 않는 명령어입니다.");
+			break;
 		}
-	}
-
-	public MemberController(Scanner sc, List<Member> members) {
-		this.sc = sc;
-		this.members = members;
 	}
 
 	public void doJoin() {
