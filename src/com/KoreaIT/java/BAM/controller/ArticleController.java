@@ -7,15 +7,21 @@ import java.util.Scanner;
 import com.KoreaIT.java.BAM.dto.Article;
 import com.KoreaIT.java.BAM.util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 	private List<Article> articles;
 	private Scanner sc;
+	private String cmd;
 
-	public ArticleController(Scanner sc, List<Article> articles) {
-		this.articles = articles;
-		this.sc = sc;
+	public ArticleController(Scanner sc) {
+		articles = new ArrayList<>();
+		 
 	}
-
+	
+	public void doAction(String cmd) {
+		this.cmd = cmd;
+	}
+	
+	
 	public void doWrite() {
 		int id = articles.size() + 1;
 		String regDate = Util.getNowDateStr();
@@ -124,6 +130,12 @@ public class ArticleController {
 			return articles.get(index);
 		}
 		return null;
+	}
+	public void makeTestData() {
+		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
+		articles.add(new Article(1, Util.getNowDateStr(), "제목1", "내용1", 11));
+		articles.add(new Article(2, Util.getNowDateStr(), "제목2", "내용2", 22));
+		articles.add(new Article(3, Util.getNowDateStr(), "제목3", "내용3", 33));
 	}
 
 }

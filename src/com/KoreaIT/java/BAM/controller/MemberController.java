@@ -1,21 +1,26 @@
 package com.KoreaIT.java.BAM.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.KoreaIT.java.BAM.dto.Member;
 import com.KoreaIT.java.BAM.util.Util;
 
-public class MemberController {
+public class MemberController extends Controller {
 
 	private List<Member> members;
 	private Scanner sc;
-	
-	public MemberController(Scanner sc,List<Member> members) {
-		this.members = members;
+
+	public MemberController(Scanner sc) {
+		members = new ArrayList<>();
 		this.sc = sc;
 	}
-	
+
+	public void doAction(String cmd) {
+
+	}
+
 	public void doJoin(List<Member> members, Scanner sc) {
 		int id = members.size() + 1;
 		String regDate = Util.getNowDateStr();
@@ -55,8 +60,9 @@ public class MemberController {
 		Member member = new Member(id, regDate, loginId, loginPw, name);
 		members.add(member);
 		System.out.printf("%d번 회원님 환영합니다\n", id);
-		
+
 	}
+
 	private boolean isJoinableLoginId(String loginId) {
 		int index = getMemberIndexByLoginId(loginId);
 
