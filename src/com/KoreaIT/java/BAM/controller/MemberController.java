@@ -13,8 +13,8 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private String cmd;
 	private String actionMethodName;
-	private Member loginedMember;
-
+	
+	
 	public MemberController(Scanner sc) {
 		this.sc = sc;
 		members = new ArrayList<>();
@@ -168,11 +168,6 @@ public class MemberController extends Controller {
 		return members.get(index);
 	}
 
-	private boolean isLogined() {
-		// loginedMember이 null이 아니면 true
-		// loginedMember이 null이면 false
-		return loginedMember != null;
-	}
 
 	public void makeTestData() {
 		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");

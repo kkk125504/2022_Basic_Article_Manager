@@ -27,6 +27,11 @@ public class ArticleController extends Controller {
 			showList();
 			break;
 		case "write":
+			if(isLogined()== false) {
+				System.out.println("로그인후 이용해 주세요.");
+				break;
+			}
+			
 			doWrite();
 			break;
 		case "detail":
@@ -45,6 +50,7 @@ public class ArticleController extends Controller {
 	}
 
 	private void doWrite() {
+		
 		int id = articles.size() + 1;
 		String regDate = Util.getNowDateStr();
 		System.out.printf("제목 : ");
@@ -52,9 +58,10 @@ public class ArticleController extends Controller {
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
 		Article article = new Article(id, regDate, title, body);
+			
 		articles.add(article);
 		System.out.printf("%d번 글이 생성되었습니다\n", id);
-
+		
 	}
 
 	private void showList() {
