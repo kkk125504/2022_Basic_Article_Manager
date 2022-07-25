@@ -13,10 +13,10 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private String cmd;
 	private String actionMethodName;
-	
-	
+
 	public MemberController(Scanner sc) {
 		this.sc = sc;
+
 		members = new ArrayList<>();
 	}
 
@@ -43,25 +43,14 @@ public class MemberController extends Controller {
 		}
 	}
 
-	private void showProfile() {
-		if (loginedMember == null) {
-			System.out.println("로그아웃 상태입니다");
-			return;
-		} else {
-			System.out.printf("로그인 아이디 : %s\n", loginedMember.loginId);
-			System.out.printf("이름 : %s\n", loginedMember.name);
-		}
-	}
-
-
 	private void doLogout() {
 		if (isLogined() == false) {
-			System.out.println("로그인 상태가 아닙니다.");
+			System.out.println("로그인 상태가 아닙니다");
 			return;
 		}
 
 		loginedMember = null;
-		System.out.println("로그아웃 되었습니다.");
+		System.out.println("로그아웃 되었습니다");
 	}
 
 	private void doLogin() {
@@ -90,6 +79,16 @@ public class MemberController extends Controller {
 		loginedMember = member;
 		System.out.printf("로그인 성공! %s님 환영합니다.\n", loginedMember.name);
 
+	}
+
+	private void showProfile() {
+		if (loginedMember == null) {
+			System.out.println("로그아웃 상태입니다");
+			return;
+		} else {
+			System.out.printf("로그인 아이디 : %s\n", loginedMember.loginId);
+			System.out.printf("이름 : %s\n", loginedMember.name);
+		}
 	}
 
 	private void doJoin() {
@@ -135,7 +134,15 @@ public class MemberController extends Controller {
 		System.out.printf("%d번 회원님 환영합니다\n", id);
 	}
 
-	
+	private Member getMemberByLoginId(String loginId) {
+		int index = getMemberIndexByLoginId(loginId);
+
+		if (index == -1) {
+			return null;
+		}
+
+		return members.get(index);
+	}
 
 	private boolean isJoinableLoginId(String loginId) {
 		int index = getMemberIndexByLoginId(loginId);
@@ -155,24 +162,15 @@ public class MemberController extends Controller {
 			}
 			i++;
 		}
+
 		return -1;
 	}
 
-	private Member getMemberByLoginId(String loginId) {
-		int index = getMemberIndexByLoginId(loginId);
-
-		if (index == -1) {
-			return null;
-		}
-
-		return members.get(index);
-	}
-
-
 	public void makeTestData() {
-		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
-		members.add(new Member(1, Util.getNowDateStr(), "test1", "1111", "회원1"));
-		members.add(new Member(2, Util.getNowDateStr(), "test2", "2222", "회원2"));
-		members.add(new Member(3, Util.getNowDateStr(), "test3", "3333", "회원3"));
+		System.out.println("테스트를 위한 회원 데이터를 생성합니다.");
+
+		members.add(new Member(1, Util.getNowDateStr(), "test1", "test1", "홍길동"));
+		members.add(new Member(2, Util.getNowDateStr(), "test2", "test2", "김철수"));
+		members.add(new Member(3, Util.getNowDateStr(), "test3", "test3", "박영수"));
 	}
 }
