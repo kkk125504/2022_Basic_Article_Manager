@@ -62,15 +62,16 @@ public class App {
 			}
 			String actionName = controllerName + "/" + actionMethodName;
 			switch (actionName) {
-			case "article/write":
-			case "article/delete":
-			case "article/modify":
-			case "member/logout":
+			case "article/write":	
+			case "article/delete":		
+			case "article/modify":	
+			case "member/logout":			
 			case "member/profile":
 				if (Controller.isLogined() == false) {
 					System.out.println("로그인 후 이용해주세요");
 					continue;
 				}
+				break;
 			}
 
 			switch (actionName) {
