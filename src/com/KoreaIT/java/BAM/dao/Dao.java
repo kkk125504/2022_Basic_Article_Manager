@@ -1,7 +1,7 @@
 package com.KoreaIT.java.BAM.dao;
 
 public class Dao {
-	public int lastId;
+	protected int lastId;
 	
 	Dao(){
 		this.lastId = 0 ;
@@ -13,7 +13,7 @@ public class Dao {
 		return lastId;
 	}
 	
-	public int getNewId() {
+	public int setNewId() {
 		
 		return lastId + 1;
 	}

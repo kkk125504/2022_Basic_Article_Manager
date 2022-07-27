@@ -48,7 +48,7 @@ public class ArticleController extends Controller {
 
 	private void doWrite() {
 
-		int id = Container.articleDao.getNewId();
+		int id = Container.articleDao.setNewId();
 		String regDate = Util.getNowDateStr();
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
@@ -100,6 +100,7 @@ public class ArticleController extends Controller {
 			for(Member member : members) {
 				if(member.id == article.memberId) {
 					writerName =member.name;
+					break;
 				}
 			}
 			
@@ -125,8 +126,6 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시물은 없습니다\n", id);
 			return;
 		}
-
-		foundArticle.increaseHit();
 		
 		String writerName = null; //작성자
 		
@@ -135,9 +134,11 @@ public class ArticleController extends Controller {
 		for(Member member : members) {
 			if(member.id == foundArticle.memberId) {
 				writerName =member.name;
+				break;
 			}
 		}
 		
+		foundArticle.increaseHit();
 		System.out.printf("번호 : %d\n", foundArticle.id);
 		System.out.printf("날짜 : %s\n", foundArticle.regDate);
 		System.out.printf("제목 : %s\n", foundArticle.title);
@@ -233,9 +234,9 @@ public class ArticleController extends Controller {
 	public void makeTestData() {
 		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
 
-		Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
-		Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
-		Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 2, "제목3", "내용3", 33));
+		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
+		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
+		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목3", "내용3", 33));
 	}
 
 }

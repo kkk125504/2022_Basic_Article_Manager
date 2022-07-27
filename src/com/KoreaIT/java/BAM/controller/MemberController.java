@@ -50,21 +50,42 @@ public class MemberController extends Controller {
 	}
 
 	private void doLogin() {
-		System.out.printf("로그인 아이디 : ");
-		String loginId = sc.nextLine();
-		System.out.printf("로그인 비밀번호 : ");
-		String loginPw = sc.nextLine();
+		Member member = null;
+		String loginPw = null;
 
-		Member member = getMemberByLoginId(loginId);
+		while (true) {
+			System.out.printf("로그인 아이디 : ");
+			String loginId = sc.nextLine();
+			
+			if (loginId.trim().length() == 0) {
+				System.out.println("로그인 아이디를 입력해주세요");
+				continue;
+			}
 
-		if (member == null) {
-			System.out.println("일치하는 회원이 없습니다");
-			return;
-		}
+			while (true) {
+				System.out.printf("로그인 비밀번호 : ");
+				loginPw = sc.nextLine();
+				
+				if (loginPw.trim().length() == 0) {
+					System.out.println("로그인 비밀번호를 입력해주세요");
+					continue;
+				}
+				break;
+			}
 
-		if (member.loginPw.equals(loginPw) == false) {
-			System.out.println("비밀번호를 다시 입력해주세요");
-			return;
+			member = getMemberByLoginId(loginId);
+
+			if (member == null) {
+				System.out.println("일치하는 회원이 없습니다");
+				return;
+			}
+
+			if (member.loginPw.equals(loginPw) == false) {
+				System.out.println("비밀번호가 일치하지 않습니다");
+				return;
+			}
+
+			break;
 		}
 
 		loginedMember = member;
@@ -75,11 +96,11 @@ public class MemberController extends Controller {
 	private void showProfile() {
 		System.out.printf("로그인 아이디 : %s\n", loginedMember.loginId);
 		System.out.printf("이름 : %s\n", loginedMember.name);
-		
+
 	}
 
 	private void doJoin() {
-		int id = Container.memberDao.getNewId();
+		int id = Container.memberDao.setNewId();
 		String regDate = Util.getNowDateStr();
 		String loginId = null;
 
