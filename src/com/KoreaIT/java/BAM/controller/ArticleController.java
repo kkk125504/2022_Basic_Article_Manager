@@ -7,6 +7,7 @@ import java.util.Scanner;
 import com.KoreaIT.java.BAM.container.Container;
 import com.KoreaIT.java.BAM.dto.Article;
 import com.KoreaIT.java.BAM.dto.Member;
+import com.KoreaIT.java.BAM.service.ArticleService;
 import com.KoreaIT.java.BAM.util.Util;
 
 public class ArticleController extends Controller {
@@ -14,10 +15,11 @@ public class ArticleController extends Controller {
 	private List<Article> articles;
 	private String cmd;
 	private String actionMethodName;
+	private ArticleService articleService;
 
 	public ArticleController(Scanner sc) {
 		this.sc = sc;
-		articles = Container.articleDao.articles;
+		this.articleService = Container.articleService;
 	}
 
 	public void doAction(String cmd, String actionMethodName) {
@@ -54,7 +56,7 @@ public class ArticleController extends Controller {
 		String title = sc.nextLine();
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
-		
+
 		Article article = new Article(id, regDate, loginedMember.id, title, body);
 		Container.articleDao.add(article);
 
@@ -63,47 +65,31 @@ public class ArticleController extends Controller {
 	}
 
 	private void showList() {
-		if (articles.size() == 0) {
-			System.out.println("게시물이 없습니다");
-			return;
-		}
-
 		String searchKeyword = cmd.substring("article list".length()).trim();
 
 		System.out.printf("검색어 : %s\n", searchKeyword);
 
-		List<Article> forPrintArticles = articles;
-
-		if (searchKeyword.length() > 0) {
-			forPrintArticles = new ArrayList<>();
-
-			for (Article article : articles) {
-				if (article.title.contains(searchKeyword)) {
-					forPrintArticles.add(article);
-				}
-			}
-
-			if (forPrintArticles.size() == 0) {
-				System.out.println("검색 결과가 없습니다");
-				return;
-			}
+		List<Article> forPrintArticles = Container.articleService.getForPrintArticles(searchKeyword);
+		
+		if (forPrintArticles.size() == 0) {
+			System.out.println("게시물이 없습니다");
+			return;
 		}
 
 		System.out.printf("번호    |   제목     |     %7s        |    작성자  |   조회\n", "날짜");
+
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 			Article article = forPrintArticles.get(i);
-			
-			String writerName = null; //작성자
-			
+			String writerName = null;
+
 			List<Member> members = Container.memberDao.members;
-			
-			for(Member member : members) {
-				if(member.id == article.memberId) {
-					writerName =member.name;
+
+			for (Member member : members) {
+				if (article.memberId == member.id) {
+					writerName = member.name;
 					break;
 				}
 			}
-			
 			System.out.printf("%7d | %6s   | %5s  |   %7s  | %5d\n", article.id, article.title, article.regDate,
 					writerName, article.hit);
 		}
@@ -126,18 +112,18 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시물은 없습니다\n", id);
 			return;
 		}
-		
-		String writerName = null; //작성자
-		
+
+		String writerName = null; // 작성자
+
 		List<Member> members = Container.memberDao.members;
-		
-		for(Member member : members) {
-			if(member.id == foundArticle.memberId) {
-				writerName =member.name;
+
+		for (Member member : members) {
+			if (member.id == foundArticle.memberId) {
+				writerName = member.name;
 				break;
 			}
 		}
-		
+
 		foundArticle.increaseHit();
 		System.out.printf("번호 : %d\n", foundArticle.id);
 		System.out.printf("날짜 : %s\n", foundArticle.regDate);
@@ -234,9 +220,12 @@ public class ArticleController extends Controller {
 	public void makeTestData() {
 		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
 
-		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
-		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
-		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목3", "내용3", 33));
+		Container.articleDao
+				.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
+		Container.articleDao
+				.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
+		Container.articleDao
+				.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목3", "내용3", 33));
 	}
 
 }
