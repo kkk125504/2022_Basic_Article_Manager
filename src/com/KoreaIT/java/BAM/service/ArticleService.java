@@ -38,4 +38,8 @@ public class ArticleService {
 	public void remove(Article foundArticle) {
 		articleDao.remove(foundArticle);
 	}
+	
+	public List<Article> getForPrintArticles() {
+		return articleDao.getArticles(null);
+	}
 }

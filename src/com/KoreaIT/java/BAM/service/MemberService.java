@@ -33,5 +33,11 @@ public class MemberService {
 	public List<Member> getMembers() {
 		return memberDao.getMembers();
 	}
+	
+	public String getMemberNameById(int memberid) {
+
+		return memberDao.getMemberNameById(memberid);
+	}
+
 
 }
