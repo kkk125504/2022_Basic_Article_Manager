@@ -17,18 +17,6 @@ public class MemberDao extends Dao {
 		lastId++;
 	}
 
-	private int getMemberIndexByLoginId(String loginId) {
-		int i = 0;
-		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
-				return i;
-			}
-			i++;
-		}
-
-		return -1;
-	}
-
 	public Member getMemberByLoginId(String loginId) {
 		int index = getMemberIndexByLoginId(loginId);
 
@@ -47,5 +35,21 @@ public class MemberDao extends Dao {
 		}
 
 		return false;
+	}
+
+	public int getMemberIndexByLoginId(String loginId) {
+		int i = 0;
+		for (Member member : members) {
+			if (member.loginId.equals(loginId)) {
+				return i;
+			}
+			i++;
+		}
+
+		return -1;
+	}
+
+	public List<Member> getMembers() {
+		return members;
 	}
 }

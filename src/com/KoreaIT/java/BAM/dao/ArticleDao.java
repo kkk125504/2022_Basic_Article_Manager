@@ -18,23 +18,13 @@ public class ArticleDao extends Dao {
 		lastId++;
 	}
 
-	public void remove(Article foundArticle) {
-		articles.remove(foundArticle);
-
-	}
-
-	public void modify(Article foundArticle, String title, String body) {
-		foundArticle.title = title;
-		foundArticle.body = body;
-	}
-
 	public List<Article> getArticles(String searchKeyword) {
 		if (searchKeyword != null && searchKeyword.length() != 0) {
 
 			List<Article> forPrintArticles = new ArrayList<>();
 
 			if (searchKeyword.length() > 0) {
-
+				System.out.printf("검색어 : %s\n", searchKeyword);
 				for (Article article : articles) {
 					if (article.title.contains(searchKeyword)) {
 						forPrintArticles.add(article);
@@ -47,6 +37,18 @@ public class ArticleDao extends Dao {
 		return articles;
 	}
 
+	public int getArticleIndexById(int id) {
+		int i = 0;
+		for (Article article : articles) {
+
+			if (article.id == id) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+
 	public Article getArticleById(int id) {
 		int index = getArticleIndexById(id);
 
@@ -57,16 +59,8 @@ public class ArticleDao extends Dao {
 		return null;
 	}
 
-	private int getArticleIndexById(int id) {
-		int i = 0;
-		for (Article article : articles) {
-
-			if (article.id == id) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
+	public void remove(Article foundArticle) {
+		articles.remove(foundArticle);
 	}
 
 }
